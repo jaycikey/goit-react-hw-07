@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setFilter } from "../../redux/filtersSlice";
 
 const SearchBar = () => {
-  const filter = useSelector((state) => state.filters);
+  const filter = useSelector((state) => state.filters.name);
 
   const dispatch = useDispatch();
 

@@ -1,29 +1,46 @@
-import Contact from "../Contact/Contact";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteContact } from "../../redux/contactsSlice";
+import { fetchContacts, deleteContact } from "../../redux/contactsOperations";
+import Contact from "../Contact/Contact";
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector((state) => state.contacts.items);
-  const filter = useSelector((state) => state.filters);
+  // Доступ до стану контактів і фільтра
+  const {
+    items: contacts,
+    loading,
+    error,
+  } = useSelector((state) => state.contacts);
+  const filter = useSelector((state) => state.filters.name);
 
-  const filteredContacts = contacts.filter((contact) =>
-    contact.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
 
   const handleDelete = (id) => {
     dispatch(deleteContact(id));
   };
 
+  const getFilteredContacts = () => {
+    return contacts.filter((contact) =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
+
+  const filteredContacts = getFilteredContacts();
+
+  if (loading) return <p>Loading contacts...</p>;
+  if (error) return <p>An error occurred: {error}</p>;
+
   return (
     <ul>
-      {filteredContacts.map(({ id, name, number }) => (
+      {filteredContacts.map(({ id, name, phone }) => (
         <Contact
           key={id}
           id={id}
           name={name}
-          number={number}
-          onDelete={handleDelete}
+          phone={phone}
+          onDelete={() => handleDelete(id)}
         />
       ))}
     </ul>
