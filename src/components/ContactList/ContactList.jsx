@@ -1,36 +1,15 @@
-import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchContacts, deleteContact } from "../../redux/contactsOperations";
+import { deleteContact } from "../../redux/contactsOperations";
+import { selectVisibleContacts } from "../../redux/contactsSelectors";
 import Contact from "../Contact/Contact";
 
 const ContactList = () => {
   const dispatch = useDispatch();
-  // Доступ до стану контактів і фільтра
-  const {
-    items: contacts,
-    loading,
-    error,
-  } = useSelector((state) => state.contacts);
-  const filter = useSelector((state) => state.filters.name);
-
-  useEffect(() => {
-    dispatch(fetchContacts());
-  }, [dispatch]);
+  const filteredContacts = useSelector(selectVisibleContacts);
 
   const handleDelete = (id) => {
     dispatch(deleteContact(id));
   };
-
-  const getFilteredContacts = () => {
-    return contacts.filter((contact) =>
-      contact.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
-
-  const filteredContacts = getFilteredContacts();
-
-  if (loading) return <p>Loading contacts...</p>;
-  if (error) return <p>An error occurred: {error}</p>;
 
   return (
     <ul>
