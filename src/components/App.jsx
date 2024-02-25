@@ -17,11 +17,11 @@ const App = () => {
   return (
     <div className={styles.phonebook}>
       <h1>Phonebook</h1>
-      {loading && <p>Loading...</p>}
-      {error && <p>Error: {error}</p>}
       <ContactForm />
       <SearchBar />
       <ContactList />
+      {loading && <p>Loading...</p>}
+      {error && <p>Error: {error}</p>}
     </div>
   );
 };
