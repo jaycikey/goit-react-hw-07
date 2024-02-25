@@ -1,0 +1,9 @@
+.phonebook {
+  font-family: "Arial", sans-serif;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.phonebook h1 {
+  text-align: center;
+}
